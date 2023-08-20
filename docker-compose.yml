@@ -1,0 +1,32 @@
+version: '3.5'
+name: rabbitmq-demo
+
+services:
+  scheduler:
+    image: postgres:14.5
+    container_name: scheduler
+    restart: always
+    environment:
+      - POSTGRES_DB=scheduler
+      - POSTGRES_USER=root
+      - POSTGRES_PASSWORD=admin
+    ports:
+      - 7032:5432
+    volumes:
+      - scheduler_data:/var/lib/postgresql/data
+  
+  rabbitmq:
+    image: rabbitmq:management
+    container_name: rabbitmq
+    environment:
+      - RABBITMQ_DEFAULT_USER=root
+      - RABBITMQ_DEFAULT_PASS=admin
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmq
+
+volumes:
+  scheduler_data:
+  rabbitmq_data:
